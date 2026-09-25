@@ -229,3 +229,14 @@ def test_frameworks_catalogue(client, alice):
     iso = client.get("/api/frameworks/iso_27034", headers=alice).json()
     assert "copyright" in iso["license_note"].lower()
     assert len(client.get("/api/capabilities", headers=alice).json()) >= 28
+
+
+def test_concurrent_first_sign_in_does_not_fail(client):
+    from concurrent.futures import ThreadPoolExecutor
+
+    h = auth("race@acme.test", "Race")
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        codes = list(pool.map(lambda _: client.get("/api/me", headers=h).status_code, range(6)))
+    assert codes == [200] * 6
+    members = client.get("/api/org/members", headers=h).json()["members"]
+    assert [m["email"] for m in members] == ["race@acme.test"]

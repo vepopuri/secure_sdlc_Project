@@ -231,16 +231,26 @@ def _set_cell(cell, text, size, bold=False, color=BLACK, fill: RGBColor | None =
         cell.fill.background()
 
 
-def heat_color(score: float | None, smin: float, smax: float) -> RGBColor:
+HEAT_RAMP = [  # sequential single-hue ramp (light -> dark), matches the web heatmap
+    (0.0, RGBColor(0xF1, 0xF6, 0xE6), BLACK),
+    (0.2, RGBColor(0xDC, 0xEB, 0xC0), BLACK),
+    (0.4, RGBColor(0xB5, 0xD7, 0x7A), BLACK),
+    (0.6, GREEN, BLACK),
+    (0.8, GREEN_6, WHITE),
+    (0.95, GREEN_7, WHITE),
+]
+
+
+def heat_color(score: float | None, smin: float, smax: float) -> tuple[RGBColor, RGBColor]:
+    """(fill, text) colours for a score cell."""
     if score is None:
-        return LIGHT_GREY
+        return RGBColor(0xED, 0xED, 0xF0), GREY
     n = (score - smin) / (smax - smin) if smax > smin else 0
-    stops = [(0.0, RGBColor(0xDA, 0x29, 0x1C)), (0.34, RGBColor(0xED, 0x8B, 0x00)),
-             (0.6, GREEN), (0.8, GREEN_6), (1.0, GREEN_7)]
-    for threshold, color in reversed(stops):
+    fill, text = HEAT_RAMP[0][1], HEAT_RAMP[0][2]
+    for threshold, f, t in HEAT_RAMP:
         if n >= threshold - 1e-9:
-            return color
-    return stops[0][1]
+            fill, text = f, t
+    return fill, text
 
 
 def add_table(slide, left, top, width, height, headers: list[str], rows: list[list[Any]],
@@ -267,8 +277,7 @@ def add_table(slide, left, top, width, height, headers: list[str], rows: list[li
             fill = PALE if r % 2 == 0 else WHITE
             color = BLACK
             if score_cols and c in score_cols and isinstance(value, (int, float)):
-                fill = heat_color(value, *score_cols[c])
-                color = WHITE
+                fill, color = heat_color(value, *score_cols[c])
                 value = f"{value:.1f}"
             elif value is None:
                 value = "-"

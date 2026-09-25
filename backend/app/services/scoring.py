@@ -290,7 +290,21 @@ def collect_gaps_and_roadmap(results: list[dict[str, Any]], limit: int = 12) -> 
                             existing["priority"] = entry["priority"]
                         existing["horizon"] = min(existing["horizon"], entry["horizon"])
     gaps.sort(key=lambda g: (-g["shortfall"], g["framework"], g["practice"]))
-    roadmap = sorted(
-        recs.values(), key=lambda r: (r["horizon"], PRIORITY_ORDER[r["priority"]], -r["weight"])
-    )
-    return gaps[:limit], roadmap[: limit * 2]
+    return gaps[:limit], sequence_roadmap(list(recs.values()))[: limit * 2]
+
+
+ROADMAP_CAPACITY = {30: 6, 60: 6}  # actions a team can realistically start per horizon
+
+
+def sequence_roadmap(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Capacity-based sequencing: each horizon keeps its highest-impact actions (priority,
+    then weighted shortfall) and overflow moves to the next horizon (30 -> 60 -> 90)."""
+    ordered = sorted(items, key=lambda r: (PRIORITY_ORDER[r["priority"]], -r["weight"], r["text"]))
+    buckets: dict[int, list[dict[str, Any]]] = {30: [], 60: [], 90: []}
+    for r in ordered:
+        horizon = r["horizon"] if r["horizon"] in buckets else 60
+        while horizon in ROADMAP_CAPACITY and len(buckets[horizon]) >= ROADMAP_CAPACITY[horizon]:
+            horizon = 60 if horizon == 30 else 90
+        r["horizon"] = horizon
+        buckets[horizon].append(r)
+    return buckets[30] + buckets[60] + buckets[90]

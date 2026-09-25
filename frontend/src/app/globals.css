@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Deloitte palette + apple.com-style neutrals */
+@theme {
+  --color-brand: #86bc25;       /* Deloitte Green */
+  --color-brand-6: #26890d;     /* Green 6 */
+  --color-brand-7: #046a38;     /* Green 7 */
+  --color-brand-50: #f3f8e9;
+  --color-brand-100: #e3f0cc;
+  --color-ink: #000000;
+  --color-fg: #1d1d1f;
+  --color-muted: #6e6e73;
+  --color-line: #d2d2d7;
+  --color-canvas: #f5f5f7;
+  --color-danger: #da291c;
+  --color-warn: #ed8b00;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica,
+    Arial, sans-serif;
+
+  --radius-card: 1.25rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-brand-100);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-6);
+  outline-offset: 2px;
+}
+
+@utility card {
+    @apply rounded-[var(--radius-card)] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_24px_rgba(0,0,0,0.04)];
+  }
+
+@utility pill {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+@utility pill-primary {
+    @apply pill bg-ink text-white hover:bg-fg;
+  }
+
+@utility pill-brand {
+    @apply pill bg-brand-7 text-white hover:bg-brand-6;
+  }
+
+@utility pill-secondary {
+    @apply pill border border-line bg-white text-fg hover:border-fg;
+  }
+
+@utility pill-ghost {
+    @apply pill text-brand-7 hover:bg-brand-50;
+  }
+
+@utility input {
+    @apply w-full rounded-xl border border-line bg-white px-4 py-2.5 text-[15px] text-fg placeholder:text-muted
+      focus:border-brand-6 focus:outline-none focus:ring-4 focus:ring-brand-100;
+  }
+
+@utility label {
+    @apply mb-1.5 block text-[13px] font-medium text-muted;
+  }
+
+@utility eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.08em] text-brand-6;
+  }

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 import jwt
 from fastapi import Depends, HTTPException, Request, status
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from .config import get_settings
@@ -83,7 +84,15 @@ def _provision_user(db: Session, email: str, name: str | None) -> User:
         db.flush()
         user = User(email=email, name=name, org_id=org.id, role="admin")
     db.add(user)
-    db.commit()
+    try:
+        db.commit()
+    except IntegrityError:
+        # A concurrent first request provisioned the same user; use that row.
+        db.rollback()
+        existing = db.scalar(select(User).where(User.email == email))
+        if existing is None:
+            raise
+        return existing
     db.refresh(user)
     return user
 

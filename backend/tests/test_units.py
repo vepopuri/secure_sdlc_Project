@@ -183,3 +183,16 @@ def test_blob_fetch_does_not_follow_redirects():
     )
     with httpx.Client(transport=transport, follow_redirects=False) as c, pytest.raises(BlobFetchError):
         fetch_blob(url, ALLOWED, 1000, client=c)
+
+
+def test_roadmap_sequencing_respects_capacity():
+    from app.services.scoring import ROADMAP_CAPACITY, sequence_roadmap
+
+    items = [{"text": f"a{i}", "priority": "high", "horizon": 30, "weight": i, "practices": []} for i in range(15)]
+    items.append({"text": "later", "priority": "low", "horizon": 90, "weight": 1, "practices": []})
+    out = sequence_roadmap(items)
+    by = {h: [r["text"] for r in out if r["horizon"] == h] for h in (30, 60, 90)}
+    assert len(by[30]) == ROADMAP_CAPACITY[30] and len(by[60]) == ROADMAP_CAPACITY[60]
+    assert by[30][0] == "a14"  # highest weighted shortfall first
+    assert by[90][-1] == "later"
+    assert len(out) == 16
