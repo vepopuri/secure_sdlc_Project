@@ -1,0 +1,109 @@
+key: iso_27034
+name: ISO/IEC 27034 Application Security
+version: "2011-2018"
+short_name: ISO/IEC 27034
+description: >-
+  Structure and identifiers of the ISO/IEC 27034 series (application security). Only the
+  component names are used; practice descriptions are the platform's own paraphrases.
+source_url: https://www.iso.org/standard/44378.html
+license_note: >-
+  ISO/IEC 27034 text is copyrighted by ISO/IEC. This file contains structure and
+  identifiers only; no normative text is reproduced. Assessors must refer to a licensed copy.
+copyright_restricted: true
+scale:
+  min: 0
+  max: 4
+  step: 0.5
+  default_target: 3
+  labels:
+    0: Not in place
+    1: Initial
+    2: Managed
+    3: Defined
+    4: Optimised
+level_criteria:
+  1: Component is informal or only exists for some applications.
+  2: Component is documented and managed for key applications.
+  3: Component is defined organisation-wide and consistently applied.
+  4: Component is measured and continuously improved.
+domains:
+  - id: ONF
+    name: Organization Normative Framework (27034-1/-2)
+    practices:
+      - id: ONF.CTX
+        name: Business, regulatory and technological contexts
+        description: Platform paraphrase - the organisation records the contexts that drive application security needs.
+        capabilities: {policy_compliance: 1.0, governance_strategy: 0.5}
+      - id: ONF.SPEC
+        name: Application specifications repository
+        description: Platform paraphrase - application specifications and inventories are maintained centrally.
+        capabilities: {asset_inventory: 1.0, security_requirements: 0.4}
+      - id: ONF.ROLES
+        name: Roles, responsibilities and qualifications
+        description: Platform paraphrase - application security roles are defined and staff are qualified for them.
+        capabilities: {governance_strategy: 0.8, training_awareness: 0.8}
+      - id: ONF.ASC-LIB
+        name: Application security control library
+        description: Platform paraphrase - a reusable library of application security controls is maintained.
+        capabilities: {security_requirements: 0.8, secure_architecture: 0.6, secure_coding: 0.5}
+      - id: ONF.PROC
+        name: Application security processes
+        description: Platform paraphrase - processes related to application security are defined and maintained.
+        capabilities: {governance_strategy: 0.7, policy_compliance: 0.6}
+      - id: ONF.ALC
+        name: Application life cycle reference model
+        description: Platform paraphrase - a reference application life cycle with security activities per stage is defined.
+        capabilities: {governance_strategy: 0.5, release_management: 0.5, cicd_security: 0.4}
+  - id: ASMP
+    name: Application Security Management Process (27034-1)
+    practices:
+      - id: ASMP.1
+        name: Specifying application requirements and environment
+        description: Platform paraphrase - requirements and the target environment of the application are identified.
+        capabilities: {security_requirements: 1.0, risk_management: 0.4}
+      - id: ASMP.2
+        name: Assessing application security risks
+        description: Platform paraphrase - risks to the application are assessed and a targeted level of trust is set.
+        capabilities: {risk_management: 1.0, threat_modeling: 0.8}
+      - id: ASMP.3
+        name: Creating and maintaining the Application Normative Framework
+        description: Platform paraphrase - an application-specific subset of the ONF is selected and maintained.
+        capabilities: {security_requirements: 0.7, policy_compliance: 0.5}
+      - id: ASMP.4
+        name: Provisioning and operating the application
+        description: Platform paraphrase - selected controls are implemented, verified and operated through the life cycle.
+        capabilities: {secure_coding: 0.6, sast: 0.4, dast: 0.4, environment_hardening: 0.5, release_management: 0.4}
+      - id: ASMP.5
+        name: Auditing the security of the application
+        description: Platform paraphrase - the application's actual level of trust is verified against the targeted level.
+        capabilities: {penetration_testing: 0.7, security_metrics: 0.6, policy_compliance: 0.4}
+  - id: ASC
+    name: Application Security Controls (27034-5/-6/-7)
+    practices:
+      - id: ASC.DEF
+        name: Control definition and protocols
+        description: Platform paraphrase - controls are specified with their security activities and verification measurements.
+        capabilities: {security_requirements: 0.8, security_testing_requirements: 0.6}
+      - id: ASC.VER
+        name: Control verification measurements
+        description: Platform paraphrase - measurements demonstrate that controls are implemented and effective.
+        capabilities: {security_testing_requirements: 0.8, sast: 0.4, dast: 0.4, security_metrics: 0.4}
+      - id: ASC.PRED
+        name: Assurance prediction across applications
+        description: Platform paraphrase - verified controls are reused to predict assurance for similar applications.
+        capabilities: {secure_architecture: 0.6, security_metrics: 0.5}
+  - id: OPS
+    name: Operation, audit and incident support
+    practices:
+      - id: OPS.MON
+        name: Application monitoring and logging
+        description: Platform paraphrase - the application's controls are monitored in operation.
+        capabilities: {logging_monitoring: 1.0}
+      - id: OPS.VULN
+        name: Vulnerability handling
+        description: Platform paraphrase - vulnerabilities are handled and fed back into the ONF.
+        capabilities: {vulnerability_management: 1.0, incident_response: 0.5}
+      - id: OPS.DATA
+        name: Data and secret protection in operation
+        description: Platform paraphrase - data and secrets used by the application are protected in operation.
+        capabilities: {data_protection: 0.9, secrets_management: 0.7, identity_access: 0.5}

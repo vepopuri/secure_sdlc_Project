@@ -1,0 +1,18 @@
+# One command runs the whole platform (frontend + API + PostgreSQL) on http://localhost:3000
+#   cp docker/.env.example .env   # optional: add OAuth / Claude keys
+#   docker compose up -d
+services:
+  ssdlc:
+    image: ghcr.io/vepopuri/secure_sdlc_project:latest
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ssdlc-data:/data
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
+
+volumes:
+  ssdlc-data:

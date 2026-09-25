@@ -1,0 +1,155 @@
+key: samm
+name: OWASP SAMM
+version: "2.0"
+short_name: SAMM
+description: >-
+  OWASP Software Assurance Maturity Model 2.0 - five business functions, fifteen security
+  practices, each assessed on three maturity levels.
+source_url: https://owaspsamm.org/model/
+license_note: OWASP SAMM is licensed under CC BY-SA 4.0. Level criteria are summarised.
+scale:
+  min: 0
+  max: 3
+  step: 0.5
+  default_target: 2
+  labels:
+    0: Not performed
+    1: Ad hoc / initial understanding
+    2: Increased efficiency and effectiveness
+    3: Comprehensive mastery at scale
+domains:
+  - id: G
+    name: Governance
+    practices:
+      - id: G-SM
+        name: Strategy & Metrics
+        description: Establish a unified, measurable software assurance strategy aligned with business risk.
+        capabilities: {governance_strategy: 1.0, security_metrics: 0.8}
+        levels:
+          1: Identify organisation drivers and a basic security roadmap.
+          2: Publish a unified strategy and define security metrics with targets.
+          3: Continuously align the program with business goals using metrics-driven feedback.
+      - id: G-PC
+        name: Policy & Compliance
+        description: Understand and meet external legal and regulatory requirements while driving internal standards.
+        capabilities: {policy_compliance: 1.0}
+        levels:
+          1: Identify and document governance and compliance drivers.
+          2: Establish application-specific security and compliance baselines.
+          3: Measure adherence to policies and standards and feed results back into improvement.
+      - id: G-EG
+        name: Education & Guidance
+        description: Provide staff with role-based security knowledge and an organisational security culture.
+        capabilities: {training_awareness: 1.0, secure_coding: 0.3}
+        levels:
+          1: Offer basic security awareness training to all personnel involved in delivery.
+          2: Provide role-specific training and establish security champions.
+          3: Develop in-house training, a centre of excellence and a community of practice.
+  - id: D
+    name: Design
+    practices:
+      - id: D-TA
+        name: Threat Assessment
+        description: Identify and understand project-level risks based on functionality and runtime environment.
+        capabilities: {threat_modeling: 1.0, risk_management: 0.6}
+        levels:
+          1: Perform best-effort application risk profiling and ad hoc threat modeling.
+          2: Use a standardised risk profile and threat modeling methodology for all applications.
+          3: Periodically review risk profiles and threat models and continuously optimise the method.
+      - id: D-SR
+        name: Security Requirements
+        description: Define security requirements for software and for suppliers.
+        capabilities: {security_requirements: 1.0, supplier_risk: 0.5}
+        levels:
+          1: Identify security requirements from high-level business objectives; evaluate suppliers basically.
+          2: Define structured, risk-driven requirements and security obligations in supplier agreements.
+          3: Build a reusable requirements framework and ensure suppliers meet the same standards.
+      - id: D-SA
+        name: Secure Architecture
+        description: Build secure-by-default designs using shared components and technology management.
+        capabilities: {secure_architecture: 1.0, secure_coding: 0.3}
+        levels:
+          1: Insert consideration of proactive security guidance into design.
+          2: Direct the design process towards known secure services and secure-by-default designs.
+          3: Formally control the design process with reference architectures and validated technologies.
+  - id: I
+    name: Implementation
+    practices:
+      - id: I-SB
+        name: Secure Build
+        description: Build software in a standardised, repeatable way with secure components.
+        capabilities: {cicd_security: 1.0, sca: 0.8, build_provenance: 0.6}
+        levels:
+          1: Define a build process and identify third-party dependencies.
+          2: Automate and harden the build pipeline and evaluate dependencies for known vulnerabilities.
+          3: Enforce build integrity and dependency risk policies at build time.
+      - id: I-SD
+        name: Secure Deployment
+        description: Increase the security of the deployment process and protect secrets.
+        capabilities: {release_management: 1.0, secrets_management: 0.9, artifact_signing: 0.5}
+        levels:
+          1: Use a documented deployment process and restrict access to production secrets.
+          2: Automate deployments with security verification and store secrets in a vault.
+          3: Verify artefact integrity at deployment and dynamically manage secrets.
+      - id: I-DM
+        name: Defect Management
+        description: Collect, record and analyse security defects to drive data-driven decisions.
+        capabilities: {vulnerability_management: 1.0, security_metrics: 0.4}
+        levels:
+          1: Track all security defects centrally.
+          2: Define and enforce defect remediation SLAs and assign ownership.
+          3: Use defect metrics and root-cause analysis to drive program improvement.
+  - id: V
+    name: Verification
+    practices:
+      - id: V-AA
+        name: Architecture Assessment
+        description: Validate the architecture for both security requirements and mitigation of typical threats.
+        capabilities: {secure_architecture: 0.9, threat_modeling: 0.5}
+        levels:
+          1: Review the architecture ad hoc to ensure mitigations for typical threats exist.
+          2: Validate the architecture's security mechanisms systematically.
+          3: Review architecture effectiveness and feed results back into reference architectures.
+      - id: V-RT
+        name: Requirements-driven Testing
+        description: Ensure security controls operate as expected and satisfy stated requirements.
+        capabilities: {security_testing_requirements: 1.0, security_requirements: 0.4}
+        levels:
+          1: Test software controls and perform basic fuzzing.
+          2: Derive test cases from known abuse cases and security requirements.
+          3: Perform security regression testing as part of the automated test suite.
+      - id: V-ST
+        name: Security Testing
+        description: Detect vulnerabilities with automated and manual testing across the delivery lifecycle.
+        capabilities: {sast: 0.9, dast: 0.9, penetration_testing: 0.8}
+        levels:
+          1: Perform automated security testing with baseline tools and manual testing of high-risk components.
+          2: Customise automated tooling and embed testing in the build and deployment process.
+          3: Integrate comprehensive automated and manual testing, including continuous penetration testing.
+  - id: O
+    name: Operations
+    practices:
+      - id: O-IM
+        name: Incident Management
+        description: Detect and respond to security incidents affecting applications.
+        capabilities: {incident_response: 1.0, logging_monitoring: 0.6}
+        levels:
+          1: Use best-effort incident detection and a basic incident response strategy.
+          2: Define an incident detection process and a dedicated incident response team.
+          3: Mature detection with automated correlation and exercise response processes regularly.
+      - id: O-EM
+        name: Environment Management
+        description: Keep the operating environment hardened and patched.
+        capabilities: {environment_hardening: 1.0, container_security: 0.6, iac_security: 0.5}
+        levels:
+          1: Apply best-effort configuration hardening and patching.
+          2: Use consistent hardening baselines and a formal patching process.
+          3: Continuously monitor configuration conformance and automate patching.
+      - id: O-OM
+        name: Operational Management
+        description: Ensure data protection and system lifecycle management in operations.
+        capabilities: {data_protection: 1.0, asset_inventory: 0.6}
+        levels:
+          1: Apply basic data protection and identify unused applications and services.
+          2: Define data catalogues and protection policies and manage system decommissioning.
+          3: Automate data protection enforcement and continuously manage the system lifecycle.

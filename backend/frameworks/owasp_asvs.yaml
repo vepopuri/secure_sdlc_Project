@@ -1,0 +1,110 @@
+key: owasp_asvs
+name: OWASP Application Security Verification Standard
+version: "5.0"
+short_name: ASVS 5.0
+description: >-
+  OWASP ASVS 5.0 - seventeen verification chapters, grouped into six assessment domains.
+  Scores express the verification level (L1-L3) the application meets for each chapter.
+source_url: https://owasp.org/www-project-application-security-verification-standard/
+license_note: OWASP ASVS is licensed under CC BY-SA 4.0. Chapter descriptions are summarised.
+scale:
+  min: 0
+  max: 3
+  step: 0.5
+  default_target: 2
+  labels:
+    0: Not verified
+    1: Level 1 - baseline
+    2: Level 2 - standard
+    3: Level 3 - advanced
+level_criteria:
+  1: Level 1 requirements for the chapter are met (minimum baseline, testable by black-box testing).
+  2: Level 2 requirements are met (recommended for most applications handling sensitive data).
+  3: Level 3 requirements are met (critical applications requiring the highest assurance).
+domains:
+  - id: IO
+    name: Input, output & business logic
+    practices:
+      - id: V1
+        name: Encoding and Sanitization
+        description: Output encoding, injection prevention, sanitisation and safe deserialisation.
+        capabilities: {api_security: 1.0, secure_coding: 0.8}
+      - id: V2
+        name: Validation and Business Logic
+        description: Input validation, business logic security and anti-automation controls.
+        capabilities: {api_security: 0.9, security_requirements: 0.4}
+      - id: V5
+        name: File Handling
+        description: Safe file upload, storage and download handling.
+        capabilities: {api_security: 0.7, secure_coding: 0.6}
+  - id: WEB
+    name: Web, API & real-time
+    practices:
+      - id: V3
+        name: Web Frontend Security
+        description: Browser security mechanisms such as security headers, cookie settings and origin separation.
+        capabilities: {api_security: 0.8, secure_coding: 0.5}
+      - id: V4
+        name: API and Web Service
+        description: HTTP message structure, REST, GraphQL and WebSocket security.
+        capabilities: {api_security: 1.0}
+      - id: V17
+        name: WebRTC
+        description: Security of WebRTC media, signalling and TURN infrastructure.
+        capabilities: {api_security: 0.6, data_protection: 0.4}
+  - id: IAM
+    name: Identity & access
+    practices:
+      - id: V6
+        name: Authentication
+        description: Password security, multi-factor authentication, credential recovery and identity provider integration.
+        capabilities: {identity_access: 1.0}
+      - id: V7
+        name: Session Management
+        description: Session creation, timeout, termination and defences against session abuse.
+        capabilities: {identity_access: 0.9}
+      - id: V8
+        name: Authorization
+        description: Authorisation design, operation-level and data-level access control.
+        capabilities: {identity_access: 1.0, secure_architecture: 0.3}
+      - id: V9
+        name: Self-contained Tokens
+        description: Validation and content of self-contained tokens such as JWTs.
+        capabilities: {identity_access: 0.8, data_protection: 0.4}
+      - id: V10
+        name: OAuth and OIDC
+        description: Security of OAuth clients, resource servers, authorisation servers and OpenID Connect.
+        capabilities: {identity_access: 1.0}
+  - id: CRY
+    name: Cryptography & communications
+    practices:
+      - id: V11
+        name: Cryptography
+        description: Cryptographic inventory, algorithms, random values and key management.
+        capabilities: {data_protection: 1.0, secrets_management: 0.5}
+      - id: V12
+        name: Secure Communication
+        description: TLS for external and internal service communication.
+        capabilities: {data_protection: 0.9, environment_hardening: 0.3}
+  - id: CFG
+    name: Configuration, data & code
+    practices:
+      - id: V13
+        name: Configuration
+        description: Secure configuration, secret management, unintended information leakage and dependency configuration.
+        capabilities: {environment_hardening: 0.9, secrets_management: 0.8, sca: 0.3}
+      - id: V14
+        name: Data Protection
+        description: Protection of sensitive data in the application and on clients.
+        capabilities: {data_protection: 1.0}
+      - id: V15
+        name: Secure Coding and Architecture
+        description: Security architecture documentation, dependency management, defensive coding and safe concurrency.
+        capabilities: {secure_architecture: 0.8, secure_coding: 0.8, sca: 0.6}
+  - id: LOG
+    name: Logging & error handling
+    practices:
+      - id: V16
+        name: Security Logging and Error Handling
+        description: Security event logging, log protection and graceful error handling.
+        capabilities: {logging_monitoring: 1.0, secure_coding: 0.3}
