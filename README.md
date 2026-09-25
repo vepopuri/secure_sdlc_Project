@@ -8,6 +8,17 @@ review and override every score, and generates a PowerPoint report.
 **Frameworks:** NIST CSF 2.0 · OWASP SAMM 2.0 · NIST SSDF (SP 800-218) · BSIMM · OWASP ASVS 5.0 ·
 SLSA 1.0 · ISO/IEC 27034 (structure and identifiers only; the text is copyrighted).
 
+## Run it with Docker (everything in one container)
+
+```bash
+docker compose up -d --build        # or: docker build -t ssdlc . && docker run -p 3000:3000 -v ssdlc-data:/data -e ENABLE_DEV_LOGIN=true ssdlc
+```
+
+Open <http://localhost:3000>. The image bundles the web app, the API and PostgreSQL; data lives in
+the `/data` volume. Pushes to `main` publish `ghcr.io/vepopuri/secure_sdlc_project:latest`.
+Configuration, hosting on Render / Railway / a VM, and backups: [docs/deploy-docker.md](docs/deploy-docker.md).
+Deploying the frontend and API as two Vercel projects instead: [docs/deploy-vercel.md](docs/deploy-vercel.md).
+
 ## Features
 
 - **Engagements** with client, application / business unit, scope, status

@@ -9,7 +9,13 @@ import { EmptyState, ErrorNote, SectionTitle, Spinner } from "@/components/ui";
 import { api, jsonBody } from "@/lib/api";
 import { formatBytes, formatDate, useCanWrite } from "@/lib/hooks";
 import type { DocumentDetail, DocumentItem, SearchHit } from "@/lib/types";
-import { ALLOWED_EXTENSIONS, MAX_BLOB_UPLOAD_BYTES, MAX_DIRECT_UPLOAD_BYTES, isAllowedFile } from "@/lib/uploads";
+import {
+  ALLOWED_EXTENSIONS,
+  MAX_BLOB_UPLOAD_BYTES,
+  MAX_DIRECT_UPLOAD_BYTES,
+  MAX_DIRECT_UPLOAD_MB,
+  isAllowedFile,
+} from "@/lib/uploads";
 
 type UploadState = { name: string; status: "uploading" | "done" | "error"; message?: string };
 
@@ -21,7 +27,7 @@ async function uploadOne(engagementId: string, file: File, blobEnabled: boolean)
     await api(`/api/engagements/${engagementId}/documents`, { method: "POST", body: form });
     return;
   }
-  if (!blobEnabled) throw new Error("Files over 4 MB need Vercel Blob (set BLOB_READ_WRITE_TOKEN)");
+  if (!blobEnabled) throw new Error(`Files over ${MAX_DIRECT_UPLOAD_MB} MB need Vercel Blob (set BLOB_READ_WRITE_TOKEN)`);
   if (file.size > MAX_BLOB_UPLOAD_BYTES) throw new Error("File exceeds the 50 MB limit");
   const { upload } = await import("@vercel/blob/client");
   const blob = await upload(`evidence/${file.name}`, file, {
@@ -168,7 +174,7 @@ export default function EvidencePage() {
                 {ALLOWED_EXTENSIONS.filter((e) => e !== ".markdown" && e !== ".yml").map((e) => e.slice(1).toUpperCase()).join(" · ")}
               </p>
               <p className="mt-1 text-xs text-muted">
-                Up to 4 MB directly{config.data?.blobEnabled ? ", up to 50 MB through Vercel Blob" : ""}.
+                Up to {MAX_DIRECT_UPLOAD_MB} MB directly{config.data?.blobEnabled ? ", up to 50 MB through Vercel Blob" : ""}.
               </p>
               <input
                 ref={fileInput}

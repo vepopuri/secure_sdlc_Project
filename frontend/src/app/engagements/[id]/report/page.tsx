@@ -68,7 +68,7 @@ export default function ReportPage() {
       form.append("file", file);
       await api("/api/templates", { method: "POST", body: form });
     } else {
-      if (!config.data?.blobEnabled) throw new Error("Templates over 4 MB need Vercel Blob");
+      if (!config.data?.blobEnabled) throw new Error("Templates over this size need Vercel Blob");
       const { upload } = await import("@vercel/blob/client");
       const blob = await upload(`templates/${file.name}`, file, { access: "public", handleUploadUrl: "/api/blob/upload" });
       try {

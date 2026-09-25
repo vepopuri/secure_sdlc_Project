@@ -20,7 +20,9 @@ export const ALLOWED_CONTENT_TYPES = [
   "application/octet-stream",
 ];
 
-export const MAX_DIRECT_UPLOAD_BYTES = 4 * 1024 * 1024;
+// 4 MB fits the Vercel function body limit; the container build raises it (no such limit there).
+export const MAX_DIRECT_UPLOAD_MB = Number(process.env.NEXT_PUBLIC_MAX_DIRECT_UPLOAD_MB) || 4;
+export const MAX_DIRECT_UPLOAD_BYTES = MAX_DIRECT_UPLOAD_MB * 1024 * 1024;
 export const MAX_BLOB_UPLOAD_BYTES = 50 * 1024 * 1024;
 
 export function extensionOf(name: string): string {

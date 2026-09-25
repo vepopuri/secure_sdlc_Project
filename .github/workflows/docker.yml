@@ -1,0 +1,84 @@
+name: Docker
+
+# Builds the all-in-one image (frontend + API + PostgreSQL), smoke-tests it, and on main
+# publishes it to GitHub Container Registry as ghcr.io/<owner>/<repo>:latest.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Image name
+        id: meta
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: ssdlc:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test
+        run: |
+          docker run -d --name ssdlc -p 3000:3000 -e ENABLE_DEV_LOGIN=true ssdlc:test
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/backend/api/health >/dev/null 2>&1; then break; fi
+            sleep 2
+          done
+          docker logs ssdlc
+          set -x
+          curl -fsS http://localhost:3000/backend/api/health | grep '"database":"ok"'
+          curl -fsS http://localhost:3000/backend | grep '"status":"ok"'
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/)" = "307"
+          curl -fsS http://localhost:3000/signin | grep -q "Secure software"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/backend/api/engagements)" = "401"
+          # Clean shutdown and restart on the same data volume
+          docker restart ssdlc
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:3000/backend/api/health >/dev/null 2>&1; then break; fi
+            sleep 2
+          done
+          curl -fsS http://localhost:3000/backend/api/health | grep '"database":"ok"'
+          test "$(docker inspect -f '{{.Config.User}}' ssdlc)" = "app"
+
+      - name: Logs on failure
+        if: failure()
+        run: docker logs ssdlc || true
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.name }}:latest
+            ${{ steps.meta.outputs.name }}:sha-${{ github.sha }}
+          cache-from: type=gha
