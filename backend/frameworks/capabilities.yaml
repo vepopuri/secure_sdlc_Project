@@ -1,0 +1,200 @@
+# Shared SSDLC capability taxonomy.
+#
+# Every framework practice maps to one or more of these capabilities (with a weight).
+# Scores for frameworks that were not analyzed are "projected" through this mapping:
+#   analyzed practice scores -> normalized capability scores -> target framework practices.
+#
+# keywords feed the free heuristic analyzer; recommendation is its default advice.
+version: 1
+capabilities:
+  - key: governance_strategy
+    name: Security governance & strategy
+    description: An owned application security program with a charter, roadmap, budget and executive sponsorship.
+    keywords: [security strategy, appsec program, security program, roadmap, charter, executive sponsor, ciso, steering committee, security governance, risk appetite]
+    recommendation: Formalise an application security charter with an accountable owner, a funded multi-year roadmap and executive sponsorship.
+
+  - key: policy_compliance
+    name: Policy, standards & compliance
+    description: Documented security policies and standards, mapped to regulatory and contractual obligations, with compliance tracking.
+    keywords: [policy, standard, compliance, regulatory, pci, hipaa, gdpr, sox, iso 27001, soc 2, audit, control framework, exception process]
+    recommendation: Publish secure development policies and standards, map them to applicable regulations and track exceptions with expiry dates.
+
+  - key: security_metrics
+    name: Security metrics & reporting
+    description: Measured security KPIs (e.g. vulnerability SLAs, coverage) reported to leadership and used to steer the program.
+    keywords: [metric, kpi, kri, dashboard, sla, mean time to remediate, mttr, scorecard, reporting, measure]
+    recommendation: Define a small set of AppSec KPIs (tool coverage, remediation SLA adherence, open critical findings) and review them monthly with leadership.
+
+  - key: training_awareness
+    name: Security training & awareness
+    description: Role-based secure development training, security champions and awareness activities.
+    keywords: [training, awareness, secure coding training, security champion, champions, onboarding, e-learning, workshop, capture the flag, ctf]
+    recommendation: Roll out role-based secure coding training with annual refreshers and establish a security champion in every delivery team.
+
+  - key: risk_management
+    name: Application risk management
+    description: Applications are inventoried and risk-classified; risk drives the depth of security activities.
+    keywords: [risk assessment, risk rating, risk register, business impact, criticality, data classification, risk classification, risk-based, tiering]
+    recommendation: Risk-classify every application (data sensitivity, exposure, business criticality) and scale required security activities by tier.
+
+  - key: asset_inventory
+    name: Asset & application inventory
+    description: A maintained inventory of applications, services, repositories, APIs and their owners.
+    keywords: [inventory, cmdb, asset register, application portfolio, service catalog, ownership, owner, repository list]
+    recommendation: Maintain an authoritative application and API inventory with named owners, linked repositories and data classifications.
+
+  - key: security_requirements
+    name: Security requirements
+    description: Security and privacy requirements are defined per application and traced through delivery.
+    keywords: [security requirement, non-functional requirement, nfr, abuse case, misuse case, acceptance criteria, user story, asvs, privacy requirement]
+    recommendation: Derive security requirements from a standard catalogue (e.g. OWASP ASVS) for each release and add them as acceptance criteria.
+
+  - key: threat_modeling
+    name: Threat modeling
+    description: Systematic identification of threats and mitigations during design, revisited on significant change.
+    keywords: [threat model, threat modeling, threat modelling, stride, attack tree, data flow diagram, dfd, pasta, attack surface, trust boundary]
+    recommendation: Introduce lightweight threat modeling (e.g. STRIDE on data-flow diagrams) for new features and significant architecture changes.
+
+  - key: secure_architecture
+    name: Secure architecture & design
+    description: Approved secure design patterns, reference architectures and security architecture review.
+    keywords: [architecture review, reference architecture, design review, secure design, design pattern, zero trust, defense in depth, segmentation, architecture decision]
+    recommendation: Publish secure reference architectures and require a security architecture review for high-risk designs.
+
+  - key: secure_coding
+    name: Secure coding standards
+    description: Language-specific secure coding guidelines, approved libraries and frameworks.
+    keywords: [secure coding, coding standard, coding guideline, owasp top 10, cwe, input validation, output encoding, approved library, safe api]
+    recommendation: Adopt language-specific secure coding standards aligned to the OWASP Top 10 and enforce them with linters and review checklists.
+
+  - key: code_review
+    name: Security code review
+    description: Peer and security-focused code review, with checklists and mandatory approval.
+    keywords: [code review, pull request, peer review, merge request, four eyes, reviewer, approval, codeowners, review checklist]
+    recommendation: Require peer review on all changes, add a security checklist for sensitive code paths and enforce it with branch protection.
+
+  - key: sast
+    name: Static application security testing (SAST)
+    description: Automated static analysis of source code integrated into developer workflow and CI.
+    keywords: [sast, static analysis, static application security testing, codeql, sonarqube, semgrep, checkmarx, fortify, veracode, linter]
+    recommendation: Run SAST on every pull request with a tuned ruleset and block merges on new high-severity findings.
+
+  - key: sca
+    name: Software composition analysis (SCA)
+    description: Third-party and open-source dependency scanning, licence compliance and update automation.
+    keywords: [sca, software composition analysis, dependency, dependencies, open source, dependabot, renovate, snyk, npm audit, vulnerable library, licence, license]
+    recommendation: Enable SCA with automated dependency update PRs and define remediation SLAs for vulnerable components.
+
+  - key: sbom
+    name: SBOM & component transparency
+    description: Software bills of materials are generated, stored and shared for releases.
+    keywords: [sbom, software bill of materials, cyclonedx, spdx, component inventory, bill of materials]
+    recommendation: Generate an SBOM (CycloneDX or SPDX) for every release artefact and store it alongside the artefact.
+
+  - key: secrets_management
+    name: Secrets management
+    description: Secrets are stored in a vault, rotated and never committed; secret scanning is enforced.
+    keywords: [secret, secrets, vault, key vault, secrets manager, credential, api key, rotation, gitleaks, trufflehog, secret scanning, hard-coded password, hardcoded]
+    recommendation: Centralise secrets in a managed vault, enable pre-commit and repository secret scanning, and rotate exposed credentials automatically.
+
+  - key: dast
+    name: Dynamic application security testing (DAST)
+    description: Automated testing of running applications and APIs for vulnerabilities.
+    keywords: [dast, dynamic analysis, dynamic application security testing, zap, burp, web scanner, api scan, fuzzing, fuzz, iast]
+    recommendation: Add authenticated DAST (e.g. OWASP ZAP) against staging environments in the release pipeline.
+
+  - key: penetration_testing
+    name: Penetration testing
+    description: Manual security testing by qualified testers, scoped by risk, with tracked remediation.
+    keywords: [penetration test, pen test, pentest, red team, ethical hacking, bug bounty, security assessment, manual testing]
+    recommendation: Commission risk-based penetration tests before major releases and at least annually for critical applications.
+
+  - key: security_testing_requirements
+    name: Requirements-driven security testing
+    description: Security test cases derived from requirements and abuse cases, including regression tests for past defects.
+    keywords: [security test case, abuse case test, unit test, regression test, test plan, security regression, negative test]
+    recommendation: Derive security test cases from requirements and abuse cases and add regression tests for every fixed vulnerability.
+
+  - key: cicd_security
+    name: CI/CD pipeline security
+    description: Hardened pipelines with least-privilege runners, protected branches and mandatory security gates.
+    keywords: [ci/cd, pipeline, github actions, gitlab ci, jenkins, azure devops, build server, branch protection, protected branch, quality gate, security gate, runner]
+    recommendation: "Harden CI/CD: protect main branches, pin third-party actions, use least-privilege short-lived credentials (OIDC) and enforce security gates."
+
+  - key: build_provenance
+    name: Build integrity & provenance
+    description: Reproducible, isolated, hosted builds that emit verifiable provenance (e.g. SLSA).
+    keywords: [provenance, slsa, reproducible build, hermetic, isolated build, build integrity, attestation, in-toto, build platform]
+    recommendation: Generate signed SLSA provenance from a hosted, isolated build platform and verify it before deployment.
+
+  - key: artifact_signing
+    name: Artifact signing & verification
+    description: Release artefacts and container images are signed and signatures are verified at deploy time.
+    keywords: [signing, signature, sigstore, cosign, code signing, notary, signed image, verify signature, checksum]
+    recommendation: Sign release artefacts and container images (e.g. Sigstore cosign) and verify signatures in admission control.
+
+  - key: container_security
+    name: Container & cloud workload security
+    description: Image scanning, minimal base images, runtime policies and cloud workload protection.
+    keywords: [container, docker, kubernetes, k8s, image scan, trivy, base image, admission controller, pod security, cspm, cloud security posture]
+    recommendation: Use minimal hardened base images, scan images in CI and registries, and enforce admission policies in Kubernetes.
+
+  - key: iac_security
+    name: Infrastructure as code security
+    description: Infrastructure defined as code and scanned for misconfiguration before deployment.
+    keywords: [infrastructure as code, iac, terraform, cloudformation, bicep, helm, checkov, tfsec, misconfiguration, policy as code]
+    recommendation: Scan infrastructure-as-code with policy-as-code tooling (e.g. Checkov) and block misconfigurations before apply.
+
+  - key: environment_hardening
+    name: Configuration & environment hardening
+    description: Hardened baselines, configuration management and segregation of environments.
+    keywords: [hardening, baseline, cis benchmark, configuration management, patching, patch, environment separation, segregation, production access, least functionality]
+    recommendation: Apply CIS-aligned hardening baselines, automate configuration drift detection and strictly separate production from non-production.
+
+  - key: identity_access
+    name: Identity, authentication & authorization
+    description: Strong authentication (SSO/MFA), least privilege and robust authorization for users and services.
+    keywords: [authentication, authorization, sso, single sign-on, mfa, multi-factor, oauth, openid, oidc, rbac, least privilege, access review, iam, session management]
+    recommendation: Enforce SSO with MFA, implement centrally managed role-based authorization and run quarterly access reviews.
+
+  - key: data_protection
+    name: Cryptography & data protection
+    description: Data classified and protected with approved cryptography in transit and at rest; privacy controls applied.
+    keywords: [encryption, encrypt, tls, cryptography, kms, key management, hashing, at rest, in transit, pii, personal data, data protection, privacy, masking, tokenization]
+    recommendation: Encrypt sensitive data in transit (TLS 1.2+) and at rest with managed keys, and minimise and mask personal data.
+
+  - key: api_security
+    name: API & input security
+    description: Input validation, API gateway protections, rate limiting and schema enforcement.
+    keywords: [api security, api gateway, rate limit, input validation, schema validation, injection, xss, csrf, cors, content security policy, waf]
+    recommendation: Enforce schema-based input validation and rate limiting at an API gateway, and add a WAF for internet-facing endpoints.
+
+  - key: logging_monitoring
+    name: Security logging & monitoring
+    description: Security-relevant events are logged, centralised, monitored and alerted on.
+    keywords: [logging, log, siem, monitoring, alert, alerting, audit trail, observability, splunk, sentinel, detection, anomaly]
+    recommendation: Centralise application security logs in a SIEM with alerting on authentication, authorization and integrity events.
+
+  - key: vulnerability_management
+    name: Vulnerability & defect management
+    description: Findings from all sources are triaged, tracked with SLAs and remediated; root causes are analysed.
+    keywords: [vulnerability management, defect, triage, remediation, sla, backlog, jira, risk acceptance, cvss, exploitability, vulnerability disclosure, psirt, patch management]
+    recommendation: Consolidate findings from all tools in one tracker with severity-based SLAs, owner assignment and risk-acceptance workflow.
+
+  - key: incident_response
+    name: Incident response
+    description: Documented, exercised incident response process for application security incidents.
+    keywords: [incident response, incident, playbook, runbook, on-call, postmortem, post-mortem, forensics, breach, tabletop, recovery, disaster recovery, business continuity]
+    recommendation: Maintain application-specific incident playbooks, run tabletop exercises twice a year and feed lessons learned into the SDLC.
+
+  - key: release_management
+    name: Secure release & deployment
+    description: Controlled, automated deployments with security sign-off, rollback and change management.
+    keywords: [release, deployment, deploy, change management, change advisory, rollback, blue green, canary, go-live, release gate, sign-off]
+    recommendation: Automate deployments with security release criteria, approvals for production changes and tested rollback procedures.
+
+  - key: supplier_risk
+    name: Third-party & supplier risk
+    description: Security requirements and assessments for vendors, outsourced development and SaaS.
+    keywords: [third party, third-party, vendor, supplier, outsourcing, contractor, saas, due diligence, vendor assessment, supply chain]
+    recommendation: Include secure development obligations in supplier contracts and assess critical suppliers' SDLC practices annually.

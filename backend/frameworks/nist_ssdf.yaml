@@ -1,0 +1,112 @@
+key: nist_ssdf
+name: NIST Secure Software Development Framework
+version: "1.1"
+short_name: SSDF (SP 800-218)
+description: >-
+  NIST SP 800-218 SSDF v1.1 - four practice groups (Prepare the Organization, Protect the
+  Software, Produce Well-Secured Software, Respond to Vulnerabilities).
+source_url: https://csrc.nist.gov/pubs/sp/800/218/final
+license_note: NIST publications are in the public domain in the United States.
+scale:
+  min: 0
+  max: 3
+  step: 0.5
+  default_target: 2
+  labels:
+    0: Not implemented
+    1: Partially implemented
+    2: Largely implemented
+    3: Fully implemented and measured
+level_criteria:
+  1: Some tasks of the practice are performed informally or for some applications only.
+  2: Most tasks are performed consistently with documented processes and tooling.
+  3: All tasks are performed consistently, automated where possible and measured for effectiveness.
+domains:
+  - id: PO
+    name: Prepare the Organization
+    practices:
+      - id: PO.1
+        name: Define Security Requirements for Software Development
+        description: Ensure security requirements for software development are known at all times, including internal and third-party requirements.
+        capabilities: {security_requirements: 1.0, policy_compliance: 0.6, supplier_risk: 0.3}
+      - id: PO.2
+        name: Implement Roles and Responsibilities
+        description: Ensure everyone inside and outside the organisation involved in the SDLC is prepared to perform their SDLC-related roles.
+        capabilities: {governance_strategy: 0.8, training_awareness: 0.8}
+      - id: PO.3
+        name: Implement Supporting Toolchains
+        description: Use automation to reduce human effort and improve the accuracy, reproducibility and comprehensiveness of security practices.
+        capabilities: {cicd_security: 1.0, sast: 0.4, sca: 0.4}
+      - id: PO.4
+        name: Define and Use Criteria for Software Security Checks
+        description: Help ensure software resulting from the SDLC meets the organisation's expectations by defining and using criteria for checking security.
+        capabilities: {security_metrics: 0.8, release_management: 0.6, cicd_security: 0.4}
+      - id: PO.5
+        name: Implement and Maintain Secure Environments for Software Development
+        description: Ensure all components of the environments for software development are strongly protected from threats.
+        capabilities: {environment_hardening: 0.9, identity_access: 0.6, secrets_management: 0.5}
+  - id: PS
+    name: Protect the Software
+    practices:
+      - id: PS.1
+        name: Protect All Forms of Code from Unauthorized Access and Tampering
+        description: Help prevent unauthorised changes to code, both inadvertent and intentional.
+        capabilities: {code_review: 0.6, identity_access: 0.6, cicd_security: 0.7, secrets_management: 0.4}
+      - id: PS.2
+        name: Provide a Mechanism for Verifying Software Release Integrity
+        description: Help software acquirers ensure the software they acquire is legitimate and has not been tampered with.
+        capabilities: {artifact_signing: 1.0, build_provenance: 0.6}
+      - id: PS.3
+        name: Archive and Protect Each Software Release
+        description: Preserve software releases to help identify, analyse and eliminate vulnerabilities discovered after release.
+        capabilities: {sbom: 0.8, release_management: 0.6, build_provenance: 0.5}
+  - id: PW
+    name: Produce Well-Secured Software
+    practices:
+      - id: PW.1
+        name: Design Software to Meet Security Requirements and Mitigate Security Risks
+        description: Identify and evaluate security requirements and risks during design, and design software to address them.
+        capabilities: {threat_modeling: 1.0, secure_architecture: 0.8, risk_management: 0.4}
+      - id: PW.2
+        name: Review the Software Design to Verify Compliance
+        description: Review the software design to verify compliance with security requirements and risk information.
+        capabilities: {secure_architecture: 1.0, threat_modeling: 0.4}
+      - id: PW.4
+        name: Reuse Existing, Well-Secured Software When Feasible
+        description: Lower costs and reduce vulnerabilities by reusing well-secured components instead of duplicating functionality.
+        capabilities: {sca: 1.0, supplier_risk: 0.5, sbom: 0.4}
+      - id: PW.5
+        name: Create Source Code by Adhering to Secure Coding Practices
+        description: Decrease vulnerabilities by following secure coding practices appropriate to the language and environment.
+        capabilities: {secure_coding: 1.0, api_security: 0.4}
+      - id: PW.6
+        name: Configure the Compilation, Interpreter, and Build Processes
+        description: Configure build processes to improve executable security.
+        capabilities: {cicd_security: 0.8, build_provenance: 0.7}
+      - id: PW.7
+        name: Review and/or Analyze Human-Readable Code
+        description: Identify vulnerabilities through code review and static analysis.
+        capabilities: {code_review: 1.0, sast: 1.0}
+      - id: PW.8
+        name: Test Executable Code
+        description: Identify vulnerabilities through executable testing before release.
+        capabilities: {dast: 1.0, penetration_testing: 0.7, security_testing_requirements: 0.6}
+      - id: PW.9
+        name: Configure Software to Have Secure Settings by Default
+        description: Improve security by configuring software with secure default settings.
+        capabilities: {environment_hardening: 0.8, iac_security: 0.5, secure_architecture: 0.3}
+  - id: RV
+    name: Respond to Vulnerabilities
+    practices:
+      - id: RV.1
+        name: Identify and Confirm Vulnerabilities on an Ongoing Basis
+        description: Help ensure vulnerabilities are identified more quickly so they can be remediated.
+        capabilities: {vulnerability_management: 1.0, sca: 0.5, logging_monitoring: 0.3}
+      - id: RV.2
+        name: Assess, Prioritize, and Remediate Vulnerabilities
+        description: Help ensure vulnerabilities are remediated in accordance with risk.
+        capabilities: {vulnerability_management: 1.0, risk_management: 0.3}
+      - id: RV.3
+        name: Analyze Vulnerabilities to Identify Their Root Causes
+        description: Reduce the frequency of vulnerabilities by identifying and addressing root causes.
+        capabilities: {vulnerability_management: 0.8, security_metrics: 0.5, training_awareness: 0.3}

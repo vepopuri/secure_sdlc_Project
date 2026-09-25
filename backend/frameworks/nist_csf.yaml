@@ -1,0 +1,132 @@
+key: nist_csf
+name: NIST Cybersecurity Framework
+version: "2.0"
+short_name: CSF 2.0
+description: >-
+  NIST CSF 2.0 core - six functions and twenty-two categories, assessed on the CSF
+  implementation tiers, applied to the application and its delivery organisation.
+source_url: https://www.nist.gov/cyberframework
+license_note: NIST publications are in the public domain in the United States.
+scale:
+  min: 0
+  max: 4
+  step: 0.5
+  default_target: 3
+  labels:
+    0: Not implemented
+    1: Tier 1 - Partial
+    2: Tier 2 - Risk informed
+    3: Tier 3 - Repeatable
+    4: Tier 4 - Adaptive
+level_criteria:
+  1: Practices are ad hoc and reactive; limited awareness of cybersecurity risk.
+  2: Practices are approved by management but may not be established as organisation-wide policy.
+  3: Practices are formally approved as policy, consistently applied and regularly updated.
+  4: Practices adapt based on lessons learned and predictive indicators; continuous improvement.
+domains:
+  - id: GV
+    name: Govern
+    practices:
+      - id: GV.OC
+        name: Organizational Context
+        description: The mission, stakeholder expectations, dependencies and legal requirements surrounding cybersecurity risk decisions are understood.
+        capabilities: {governance_strategy: 0.7, policy_compliance: 0.7}
+      - id: GV.RM
+        name: Risk Management Strategy
+        description: Risk priorities, constraints, tolerance and appetite statements are established and used to support operational risk decisions.
+        capabilities: {risk_management: 1.0, governance_strategy: 0.5}
+      - id: GV.RR
+        name: Roles, Responsibilities, and Authorities
+        description: Cybersecurity roles, responsibilities and authorities are established to foster accountability and continuous improvement.
+        capabilities: {governance_strategy: 1.0, training_awareness: 0.3}
+      - id: GV.PO
+        name: Policy
+        description: Organizational cybersecurity policy is established, communicated and enforced.
+        capabilities: {policy_compliance: 1.0}
+      - id: GV.OV
+        name: Oversight
+        description: Results of risk management activities are used to inform, improve and adjust the risk management strategy.
+        capabilities: {security_metrics: 1.0, governance_strategy: 0.5}
+      - id: GV.SC
+        name: Cybersecurity Supply Chain Risk Management
+        description: Cyber supply chain risk management processes are identified, established, managed, monitored and improved.
+        capabilities: {supplier_risk: 1.0, sca: 0.5, sbom: 0.5}
+  - id: ID
+    name: Identify
+    practices:
+      - id: ID.AM
+        name: Asset Management
+        description: Assets that enable the organisation to achieve its purposes are identified and managed consistent with their importance.
+        capabilities: {asset_inventory: 1.0, sbom: 0.4}
+      - id: ID.RA
+        name: Risk Assessment
+        description: The cybersecurity risk to the organisation, assets and individuals is understood.
+        capabilities: {risk_management: 0.8, threat_modeling: 0.7, vulnerability_management: 0.5}
+      - id: ID.IM
+        name: Improvement
+        description: Improvements to organisational cybersecurity risk management processes are identified across all functions.
+        capabilities: {security_metrics: 0.7, vulnerability_management: 0.5, incident_response: 0.3}
+  - id: PR
+    name: Protect
+    practices:
+      - id: PR.AA
+        name: Identity Management, Authentication, and Access Control
+        description: Access to assets is limited to authorised users, services and hardware and managed commensurate with risk.
+        capabilities: {identity_access: 1.0}
+      - id: PR.AT
+        name: Awareness and Training
+        description: Personnel are provided with cybersecurity awareness and training to perform their tasks.
+        capabilities: {training_awareness: 1.0}
+      - id: PR.DS
+        name: Data Security
+        description: Data are managed consistent with the risk strategy to protect confidentiality, integrity and availability.
+        capabilities: {data_protection: 1.0, secrets_management: 0.4}
+      - id: PR.PS
+        name: Platform Security
+        description: Hardware, software and services of platforms are managed consistent with risk, including secure software development.
+        capabilities: {environment_hardening: 0.8, secure_coding: 0.6, sast: 0.4, cicd_security: 0.5, container_security: 0.4}
+      - id: PR.IR
+        name: Technology Infrastructure Resilience
+        description: Security architectures are managed to protect asset confidentiality, integrity and availability and organisational resilience.
+        capabilities: {secure_architecture: 0.8, iac_security: 0.5, api_security: 0.4}
+  - id: DE
+    name: Detect
+    practices:
+      - id: DE.CM
+        name: Continuous Monitoring
+        description: Assets are monitored to find anomalies, indicators of compromise and other potentially adverse events.
+        capabilities: {logging_monitoring: 1.0, dast: 0.3}
+      - id: DE.AE
+        name: Adverse Event Analysis
+        description: Anomalies, indicators of compromise and other adverse events are analysed to characterise the events and detect incidents.
+        capabilities: {logging_monitoring: 0.8, incident_response: 0.6}
+  - id: RS
+    name: Respond
+    practices:
+      - id: RS.MA
+        name: Incident Management
+        description: Responses to detected cybersecurity incidents are managed.
+        capabilities: {incident_response: 1.0}
+      - id: RS.AN
+        name: Incident Analysis
+        description: Investigations are conducted to ensure effective response and support forensics and recovery.
+        capabilities: {incident_response: 0.9, logging_monitoring: 0.5}
+      - id: RS.CO
+        name: Incident Response Reporting and Communication
+        description: Response activities are coordinated with internal and external stakeholders as required by laws, regulations or policies.
+        capabilities: {incident_response: 0.9, policy_compliance: 0.3}
+      - id: RS.MI
+        name: Incident Mitigation
+        description: Activities are performed to prevent expansion of an event and mitigate its effects.
+        capabilities: {incident_response: 0.9, vulnerability_management: 0.5}
+  - id: RC
+    name: Recover
+    practices:
+      - id: RC.RP
+        name: Incident Recovery Plan Execution
+        description: Restoration activities are performed to ensure operational availability of affected systems and services.
+        capabilities: {incident_response: 0.8, release_management: 0.4}
+      - id: RC.CO
+        name: Incident Recovery Communication
+        description: Restoration activities are coordinated with internal and external parties.
+        capabilities: {incident_response: 0.8}

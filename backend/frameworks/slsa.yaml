@@ -1,0 +1,76 @@
+key: slsa
+name: Supply-chain Levels for Software Artifacts
+version: "1.0"
+short_name: SLSA 1.0
+description: >-
+  SLSA 1.0 Build track - requirements for producers, build platforms and consumers,
+  assessed against Build levels L1-L3.
+source_url: https://slsa.dev/spec/v1.0/
+license_note: The SLSA specification is licensed under the Community Specification License 1.0.
+scale:
+  min: 0
+  max: 3
+  step: 1
+  default_target: 2
+  labels:
+    0: Build L0 - no guarantees
+    1: Build L1 - provenance exists
+    2: Build L2 - hosted build platform
+    3: Build L3 - hardened builds
+level_criteria:
+  1: Provenance showing how the package was built exists; the build process is consistent.
+  2: Builds run on a hosted build platform that generates and signs the provenance itself.
+  3: The build platform prevents runs from influencing one another and protects signing material.
+domains:
+  - id: PRODUCER
+    name: Producer requirements
+    practices:
+      - id: P.BUILD-PLATFORM
+        name: Choose an appropriate build platform
+        description: The producer selects a build platform capable of reaching the desired SLSA Build level.
+        capabilities: {build_provenance: 1.0, cicd_security: 0.7}
+      - id: P.CONSISTENT
+        name: Follow a consistent build process
+        description: The producer builds artefacts in a consistent, scripted manner so verifiers can form expectations.
+        capabilities: {cicd_security: 1.0, iac_security: 0.3}
+      - id: P.DISTRIBUTE
+        name: Distribute provenance
+        description: The producer distributes provenance to consumers, for example alongside the artefact or in a transparency log.
+        capabilities: {build_provenance: 0.9, sbom: 0.5, artifact_signing: 0.4}
+  - id: PROVENANCE
+    name: Provenance generation
+    practices:
+      - id: B.PROV-EXISTS
+        name: Provenance exists
+        description: The build process generates provenance describing how the artefact was produced.
+        capabilities: {build_provenance: 1.0}
+      - id: B.PROV-AUTHENTIC
+        name: Provenance is authentic
+        description: Provenance is signed by the build platform and consumers can validate its authenticity.
+        capabilities: {artifact_signing: 1.0, build_provenance: 0.8}
+      - id: B.PROV-UNFORGEABLE
+        name: Provenance is unforgeable
+        description: Provenance cannot be forged by tenants of the build platform; signing secrets are inaccessible to user-defined steps.
+        capabilities: {build_provenance: 1.0, secrets_management: 0.6}
+  - id: PLATFORM
+    name: Build platform isolation
+    practices:
+      - id: B.HOSTED
+        name: Hosted build platform
+        description: All build steps run on a hosted platform on shared or dedicated infrastructure, not a developer workstation.
+        capabilities: {cicd_security: 1.0, environment_hardening: 0.4}
+      - id: B.ISOLATED
+        name: Isolated builds
+        description: Build runs cannot influence one another; caches and secrets are isolated and ephemeral environments are used.
+        capabilities: {cicd_security: 0.8, build_provenance: 0.6, container_security: 0.4}
+  - id: CONSUMER
+    name: Verification & consumption
+    practices:
+      - id: C.VERIFY
+        name: Verify artifacts
+        description: Consumers verify provenance and signatures against expectations before use or deployment.
+        capabilities: {artifact_signing: 0.9, release_management: 0.6, sca: 0.3}
+      - id: C.DEPENDENCIES
+        name: Track upstream dependency provenance
+        description: Dependencies are consumed from trusted sources and their provenance or SBOM is evaluated.
+        capabilities: {sca: 0.9, sbom: 0.8, supplier_risk: 0.5}
